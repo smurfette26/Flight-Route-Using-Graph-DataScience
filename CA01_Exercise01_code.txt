@@ -1,0 +1,130 @@
+CREATE (n:Family {id:"PUCCI"});
+CREATE (n:Family {id:"PERUZZI"}); 
+CREATE (n:Family {id:"BISCHERI"}); 
+CREATE (n:Family {id:"CASTELLAN"}); 
+CREATE (n:Family {id:"STROZZI"}); 
+CREATE (n:Family {id:"BARBADORI"}); 
+CREATE (n:Family {id:"RIDOLFI"}); 
+CREATE (n:Family {id:"TORNABUON"}); 
+CREATE (n:Family {id:"GUADAGNI"});
+CREATE (n:Family {id:"LAMBERTES"});
+CREATE (n:Family {id:"ALBIZZI"}); 
+CREATE (n:Family {id:"GINORI"}); 
+CREATE (n:Family {id:"MEDICI"}); 
+CREATE (n:Family {id:"SALVIATI"}); 
+CREATE (n:Family {id:"ACCIAUOL"}); 
+CREATE (n:Family {id:"PAZZI"});
+
+MATCH (n:Family) RETURN n
+
+MATCH (a:Family {id:"PAZZI"}), (b:Family {id:"SALVIATI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"SALVIATI"}), (b:Family {id:"PAZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"SALVIATI"}), (b:Family {id:"MEDICI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"MEDICI"}), (b:Family {id:"SALVIATI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"MEDICI"}), (b:Family {id:"ACCIAUOL"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"ACCIAUOL"}), (b:Family {id:"MEDICI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"MEDICI"}), (b:Family {id:"BARBADORI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"BARBADORI"}), (b:Family {id:"MEDICI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"MEDICI"}), (b:Family {id:"RIDOLFI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"RIDOLFI"}), (b:Family {id:"MEDICI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"MEDICI"}), (b:Family {id:"TORNABUON"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"TORNABUON"}), (b:Family {id:"MEDICI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"MEDICI"}), (b:Family {id:"ALBIZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"ALBIZZI"}), (b:Family {id:"MEDICI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"ALBIZZI"}), (b:Family {id:"GINORI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"GINORI"}), (b:Family {id:"ALBIZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"BARBADORI"}), (b:Family {id:"CASTELLAN"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"CASTELLAN"}), (b:Family {id:"BARBADORI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"RIDOLFI"}), (b:Family {id:"STROZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"STROZZI"}), (b:Family {id:"RIDOLFI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"TORNABUON"}), (b:Family {id:"GUADAGNI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"GUADAGNI"}), (b:Family {id:"TORNABUON"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"ALBIZZI"}), (b:Family {id:"GUADAGNI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"GUADAGNI"}), (b:Family {id:"ALBIZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"CASTELLAN"}), (b:Family {id:"STROZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"STROZZI"}), (b:Family {id:"CASTELLAN"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"CASTELLAN"}), (b:Family {id:"PERUZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"PERUZZI"}), (b:Family {id:"CASTELLAN"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"STROZZI"}), (b:Family {id:"PERUZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"PERUZZI"}), (b:Family {id:"STROZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"STROZZI"}), (b:Family {id:"BISCHERI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"BISCHERI"}), (b:Family {id:"STROZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"GUADAGNI"}), (b:Family {id:"BISCHERI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"BISCHERI"}), (b:Family {id:"GUADAGNI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"GUADAGNI"}), (b:Family {id:"LAMBERTES"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"LAMBERTES"}), (b:Family {id:"GUADAGNI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"PERUZZI"}), (b:Family {id:"BISCHERI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"BISCHERI"}), (b:Family {id:"PERUZZI"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"RIDOLFI"}), (b:Family {id:"TORNABUON"}) MERGE (a)-[:MARRIAGE]->(b);
+MATCH (a:Family {id:"TORNABUON"}), (b:Family {id:"RIDOLFI"}) MERGE (a)-[:MARRIAGE]->(b);
+
+Degree
+------------------------
+
+CALL gds.degree.write({
+nodeProjection: 'Family',
+relationshipProjection: {
+MARRIED_TO: {
+type: 'MARRIAGE',
+orientation: 'UNDIRECTED'
+}
+},
+writeProperty: 'degreeCentrality'
+});
+
+
+-----------------------
+
+MATCH (n:Family)
+RETURN split(n.id, '_')[0] AS Family, size([(n)--() | 1]) AS DegreeCentrality
+ORDER BY DegreeCentrality DESC
+
+---------------
+
+CALL gds.alpha.closeness.stream({
+  nodeProjection: 'Family',
+  relationshipProjection: 'MARRIAGE',
+  improved:true 
+})
+YIELD nodeId, centrality
+RETURN gds.util.asNode(nodeId).id AS Family, centrality
+ORDER BY centrality DESC
+
+------------------
+
+CALL gds.alpha.closeness.harmonic.stream({
+  nodeProjection: 'Family',
+  relationshipProjection: 'MARRIAGE'
+})
+YIELD nodeId, centrality
+RETURN gds.util.asNode(nodeId).id AS Family, centrality
+ORDER BY centrality DESC
+
+---------------------
+
+CALL gds.graph.create('myGraph', 'Family', 'MARRIAGE')
+
+-----------------------
+
+CALL gds.betweenness.write('myGraph', { writeProperty: 'betweenness' })
+YIELD centralityDistribution, nodePropertiesWritten
+RETURN centralityDistribution.min AS minimumScore, centralityDistribution.mean AS meanScore, nodePropertiesWritten
+
+------------------------
+
+CALL gds.pageRank.write('myGraph', {
+  maxIterations: 20,
+  dampingFactor: 0.85,
+  writeProperty: 'pagerank'
+})
+YIELD nodePropertiesWritten, ranIterations
+
+
+----------------------------
+
+CALL gds.eigenvector.stream('myGraph') 
+YIELD nodeId, score
+WITH gds.util.asNode(nodeId) AS Family, score
+RETURN Family.id AS Family, score
+
+---------------------------
